@@ -28,6 +28,8 @@ namespace m1
         void OnWindowResize(int width, int height) override;
 
         // TODO(student): Class variables go here
-
+        float gl_color[4] = { 0.0f, 0.0f, 0.0f, 1.0f };
+        int mesh_count = 0;
+        glm::vec3 custom_pos;
     };
 }   // namespace m1

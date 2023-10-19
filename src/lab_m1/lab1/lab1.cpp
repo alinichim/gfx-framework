@@ -38,6 +38,14 @@ void Lab1::Init()
     // TODO(student): Load some more meshes. The value of RESOURCE_PATH::MODELS
     // is actually a path on disk, go there and you will find more meshes.
 
+    {
+        Mesh* mesh = new Mesh("custom");
+        mesh->LoadMesh(PATH_JOIN(window->props.selfDir, RESOURCE_PATH::MODELS, "animals"), "bunny.obj");
+        meshes[mesh->GetMeshID()] = mesh;
+    }
+
+    // Initialize custom mesh position
+    custom_pos = glm::vec3(0, 0, 0);
 }
 
 
@@ -55,7 +63,7 @@ void Lab1::Update(float deltaTimeSeconds)
     // TODO(student): Generalize the arguments of `glClearColor`.
     // You can, for example, declare three variables in the class header,
     // that will store the color components (red, green, blue).
-    glClearColor(0, 0, 0, 1);
+    glClearColor(gl_color[0], gl_color[1], gl_color[2], gl_color[3]);
 
     // Clears the color buffer (using the previously set color) and depth buffer
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -73,6 +81,9 @@ void Lab1::Update(float deltaTimeSeconds)
     // was previously loaded. We do this using `RenderMesh`. Check the
     // signature of this function to see the meaning of its parameters.
     // You can draw the same mesh any number of times.
+
+    // Render the object again but with different properties
+    RenderMesh(meshes["custom"], custom_pos, glm::vec3(0.2f));
 
 }
 
@@ -97,6 +108,25 @@ void Lab1::OnInputUpdate(float deltaTime, int mods)
     // a mesh instance on all three axes. You will also need to
     // generalize the position used by `RenderMesh`.
 
+    if (window->KeyHold(GLFW_KEY_W)) {
+        custom_pos += deltaTime + glm::vec3(0, 0, 1);
+    }
+    if (window->KeyHold(GLFW_KEY_S)) {
+        custom_pos -= deltaTime + glm::vec3(0, 0, 1);
+    }
+    if (window->KeyHold(GLFW_KEY_A)) {
+        custom_pos -= deltaTime + glm::vec3(1, 0, 0);
+    }
+    if (window->KeyHold(GLFW_KEY_D)) {
+        custom_pos += deltaTime + glm::vec3(1, 0, 0);
+    }
+    if (window->KeyHold(GLFW_KEY_Q)) {
+        custom_pos += deltaTime + glm::vec3(0, 1, 0);
+    }
+    if (window->KeyHold(GLFW_KEY_E)) {
+        custom_pos -= deltaTime + glm::vec3(0, 1, 0);
+    }
+
 }
 
 
@@ -105,13 +135,27 @@ void Lab1::OnKeyPress(int key, int mods)
     // Add key press event
     if (key == GLFW_KEY_F) {
         // TODO(student): Change the values of the color components.
-
+        gl_color[0] = 0.5f;
     }
 
     // TODO(student): Add a key press event that will let you cycle
     // through at least two meshes, rendered at the same position.
     // You will also need to generalize the mesh name used by `RenderMesh`.
+    if (key == GLFW_KEY_G) {
+        Mesh* mesh = new Mesh("custom");
+        if (mesh_count == 0) {
+            mesh_count = 1;
+            mesh->LoadMesh(PATH_JOIN(window->props.selfDir, RESOURCE_PATH::MODELS, "primitives"), "box.obj");
+        } else if (mesh_count == 1) {
+            mesh_count = 2;
+            mesh->LoadMesh(PATH_JOIN(window->props.selfDir, RESOURCE_PATH::MODELS, "primitives"), "sphere.obj");
+        } else {
 
+            mesh->LoadMesh(PATH_JOIN(window->props.selfDir, RESOURCE_PATH::MODELS, "animals"), "bunny.obj");
+            mesh_count = 0;
+        }
+        meshes["custom"] = mesh;
+    }
 }
 
 
