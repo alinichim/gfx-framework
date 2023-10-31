@@ -35,6 +35,18 @@ namespace m1
         float angularStep;
 
         // TODO(student): If you need any other class variables, define them here.
+        int rev1 = 1;
+        int rev2 = 1;
+        int rev3 = 1;
+
+        // Car values
+        float car1_side = 70;
+        float car2_side = 70;
+        float wheel_side = 20;
+        float car2X, car2Y;
+        float car1X, car1Y;
+        float wheel1X, wheel1Y;
+        float wheel2X, wheel2Y;
 
     };
 }   // namespace m1

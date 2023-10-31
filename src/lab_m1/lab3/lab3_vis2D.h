@@ -64,5 +64,6 @@ namespace m1
         ViewportSpace viewSpace;
         LogicSpace logicSpace;
         glm::mat3 modelMatrix, visMatrix;
+        float cx, cy;
     };
 }   // namespace m1

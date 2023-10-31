@@ -41,6 +41,8 @@ void Lab3_Vis2D::Init()
 
     glm::vec3 corner = glm::vec3(0.001, 0.001, 0);
     length = 0.99f;
+    cx = length / 2;
+    cy = length / 2;
 
     Mesh* square1 = object2D::CreateSquare("square1", corner, length, glm::vec3(1, 0, 0));
     AddMeshToList(square1);
@@ -141,19 +143,39 @@ void Lab3_Vis2D::FrameEnd()
 
 void Lab3_Vis2D::DrawScene(glm::mat3 visMatrix)
 {
-    modelMatrix = visMatrix * transform2D::Translate(0, 0);
+    modelMatrix = glm::mat3(1);
+    modelMatrix *= transform2D::Translate(cx, cy);
+    modelMatrix *= transform2D::Translate(0, 0);
+    modelMatrix *= transform2D::Translate(-cx, -cy);
+    modelMatrix = visMatrix * modelMatrix;
     RenderMesh2D(meshes["square1"], shaders["VertexColor"], modelMatrix);
 
-    modelMatrix = visMatrix * transform2D::Translate(3, 0);
+    modelMatrix = glm::mat3(1);
+    modelMatrix *= transform2D::Translate(cx, cy);
+    modelMatrix *= transform2D::Translate(3, 0);
+    modelMatrix *= transform2D::Translate(-cx, -cy);
+    modelMatrix = visMatrix * modelMatrix;
     RenderMesh2D(meshes["square1"], shaders["VertexColor"], modelMatrix);
 
-    modelMatrix = visMatrix * transform2D::Translate(1.5, 1.5);
+    modelMatrix = glm::mat3(1);
+    modelMatrix *= transform2D::Translate(cx, cy);
+    modelMatrix *= transform2D::Translate(1.5, 1.5);
+    modelMatrix *= transform2D::Translate(-cx, -cy);
+    modelMatrix = visMatrix * modelMatrix;
     RenderMesh2D(meshes["square1"], shaders["VertexColor"], modelMatrix);
 
-    modelMatrix = visMatrix * transform2D::Translate(0, 3);
+    modelMatrix = glm::mat3(1);
+    modelMatrix *= transform2D::Translate(cx, cy);
+    modelMatrix *= transform2D::Translate(0, 3);
+    modelMatrix *= transform2D::Translate(-cx, -cy);
+    modelMatrix = visMatrix * modelMatrix;
     RenderMesh2D(meshes["square1"], shaders["VertexColor"], modelMatrix);
 
-    modelMatrix = visMatrix * transform2D::Translate(3, 3);
+    modelMatrix = glm::mat3(1);
+    modelMatrix *= transform2D::Translate(cx, cy);
+    modelMatrix *= transform2D::Translate(3, 3);
+    modelMatrix *= transform2D::Translate(-cx, -cy);
+    modelMatrix = visMatrix * modelMatrix;
     RenderMesh2D(meshes["square1"], shaders["VertexColor"], modelMatrix);
 }
 
@@ -167,8 +189,32 @@ void Lab3_Vis2D::DrawScene(glm::mat3 visMatrix)
 void Lab3_Vis2D::OnInputUpdate(float deltaTime, int mods)
 {
     // TODO(student): Move the logic window with W, A, S, D (up, left, down, right)
+    if (window->KeyHold(GLFW_KEY_W)) {
+        logicSpace.y += deltaTime * 10;
+    }
+    if (window->KeyHold(GLFW_KEY_A)) {
+        logicSpace.x -= deltaTime * 10;
+    }
+    if (window->KeyHold(GLFW_KEY_S)) {
+        logicSpace.y -= deltaTime * 10;
+    }
+    if (window->KeyHold(GLFW_KEY_D)) {
+        logicSpace.x += deltaTime * 10;
+    }
 
     // TODO(student): Zoom in and zoom out logic window with Z and X
+    if (window->KeyHold(GLFW_KEY_Z)) {
+        logicSpace.x -= deltaTime * 10 / 2;
+        logicSpace.y -= deltaTime * 10 / 2;
+        logicSpace.width += deltaTime * 10;
+        logicSpace.height += deltaTime * 10;
+    }
+    if (window->KeyHold(GLFW_KEY_X)) {
+        logicSpace.x += deltaTime * 10 / 2;
+        logicSpace.y += deltaTime * 10 / 2;
+        logicSpace.width -= deltaTime * 10;
+        logicSpace.height -= deltaTime * 10;
+    }
 
 }
 
