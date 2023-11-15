@@ -2,14 +2,21 @@
 
 // Input
 // TODO(student): Get values from vertex shader
+in vec3 frag_position;
+in vec3 frag_normal;
+in vec3 frag_texture;
+in vec3 frag_color;
 
 // Output
-layout(location = 0) out vec4 out_color;
+out vec3 vertex_color;
+out vec3 vertex_normal;
+out vec3 vertex_texture;
 
 
 void main()
 {
     // TODO(student): Write pixel out color
-    out_color = vec4(1);
+    vertex_color = frag_color;
+    vertex_normal = frag_normal;
 
 }

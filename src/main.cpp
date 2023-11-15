@@ -3,6 +3,7 @@
 
 #include "components/simple_scene.h"
 #include "core/engine.h"
+#include "lab_m1/Tema1/Tema1.h"
 #include "lab_m1/lab3/lab3.h"
 #include "lab_m1/lab3/lab3_vis2D.h"
 
@@ -24,30 +25,30 @@ PREFER_DISCRETE_GPU_AMD;
 #endif
 
 std::string GetParentDir(const std::string &filePath) {
-  size_t pos = filePath.find_last_of("\\/");
-  return (std::string::npos == pos) ? "." : filePath.substr(0, pos);
+    size_t pos = filePath.find_last_of("\\/");
+    return (std::string::npos == pos) ? "." : filePath.substr(0, pos);
 }
 
 int main(int argc, char **argv) {
-  srand((unsigned int)time(NULL));
+    srand((unsigned int)time(NULL));
 
-  // Create a window property structure
-  WindowProperties wp;
-  wp.resolution = glm::ivec2(1280, 720);
-  wp.vSync = true;
-  wp.selfDir = GetParentDir(std::string(argv[0]));
+    // Create a window property structure
+    WindowProperties wp;
+    wp.resolution = glm::ivec2(1280, 720);
+    wp.vSync = true;
+    wp.selfDir = GetParentDir(std::string(argv[0]));
 
-  // Init the Engine and create a new window with the defined properties
-  (void)Engine::Init(wp);
+    // Init the Engine and create a new window with the defined properties
+    (void)Engine::Init(wp);
 
-  // Create a new 3D world and start running it
-  World *world = new m1::Lab4();
+    // Create a new 3D world and start running it
+    World *world = new m1::Tema1();
 
-  world->Init();
-  world->Run();
+    world->Init();
+    world->Run();
 
-  // Signals to the Engine to release the OpenGL context
-  Engine::Exit();
+    // Signals to the Engine to release the OpenGL context
+    Engine::Exit();
 
-  return 0;
+    return 0;
 }
