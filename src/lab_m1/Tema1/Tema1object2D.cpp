@@ -267,7 +267,20 @@ Mesh *Tema1object2D::CreateHUDSlot(const std::string &name, glm::vec3 center,
     return hudSlot;
 }
 
-glm::mat4 Tema1object2D::AttackerMoveAnimation(float delta) {
+glm::mat3 Tema1object2D::AttackerMoveAnimation(float delta) {
 
     return Tema1transform2D::Translate(-delta * 10, 0);
+}
+
+glm::mat3 Tema1object2D::ProjectileMoveAnimation(float deltaTime, float deltaX, float deltaY) {
+
+    glm::mat3 result = glm::mat3(1);
+
+    // Translation
+    result *= Tema1transform2D::Translate(-deltaTime * 50, 0);
+
+    // Rotation
+    result *= Tema1transform2D::Rotate(deltaTime);
+
+    return result;
 }

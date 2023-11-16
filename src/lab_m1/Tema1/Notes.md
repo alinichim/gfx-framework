@@ -1,6 +1,6 @@
 ### Tasks
 
 - [ ] Implement animations
-    - [ ] Projectile
-    - [ ] Attacker
+    - [x] Projectile
+    - [x] Attacker
 - [x] Implement HUD
