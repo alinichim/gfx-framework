@@ -20,8 +20,6 @@ public:
 
     virtual Mesh *getMesh() = 0;
 
-    virtual glm::mat3 getModelMatrix() = 0;
-
     float getScale() const;
 
     void setScale(float scale);
