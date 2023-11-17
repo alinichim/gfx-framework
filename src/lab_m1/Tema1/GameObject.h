@@ -50,7 +50,7 @@ public:
 
     void setCenter(const glm::vec3 &center);
 
-private:
+protected:
     float scale;
     float angle;
     float x, y, z;
