@@ -3,6 +3,7 @@
 #include "lab_m1/Tema1/Tema1.h"
 #include "lab_m1/Tema1/GameObject.h"
 #include "lab_m1/Tema1/PassiveGameObject.h"
+#include "lab_m1/Tema1/GameSlot.h"
 #include "lab_m1/Tema1/BoardSlot.h"
 #include "lab_m1/Tema1/BoardBase.h"
 #include "lab_m1/lab1/lab1.h"
