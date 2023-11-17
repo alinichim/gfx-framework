@@ -74,16 +74,16 @@ Mesh *Tema1object2D::CreateDefender(const std::string &name, glm::vec3 center,
 
     std::vector<glm::vec3> displacements = {
             // Diamond
-            glm::vec3(-halfLength / 2, halfLength, 0),  // 0
-            glm::vec3(0, 0, 0),                         // 1
-            glm::vec3(-halfLength / 2, -halfLength, 0), // 2
-            glm::vec3(-halfLength, 0, 0),               // 3
+            glm::vec3(-halfLength / 2, halfLength, 3),  // 0
+            glm::vec3(0, 0, 3),                         // 1
+            glm::vec3(-halfLength / 2, -halfLength, 3), // 2
+            glm::vec3(-halfLength, 0, 3),               // 3
 
             // Rectangle
-            glm::vec3(-halfLength / 2, -thirdHalfLength, 0), // 4
-            glm::vec3(-halfLength / 2, thirdHalfLength, 0),  // 5
-            glm::vec3(thirdHalfLength, thirdHalfLength, 0),  // 6
-            glm::vec3(thirdHalfLength, -thirdHalfLength, 0), // 7
+            glm::vec3(-halfLength / 2, -thirdHalfLength, 3), // 4
+            glm::vec3(-halfLength / 2, thirdHalfLength, 3),  // 5
+            glm::vec3(thirdHalfLength, thirdHalfLength, 3),  // 6
+            glm::vec3(thirdHalfLength, -thirdHalfLength, 3), // 7
     };
 
     std::vector<VertexFormat> vertices = {
@@ -242,8 +242,7 @@ Mesh *Tema1object2D::CreateStar(const std::string &name, glm::vec3 center,
 }
 
 Mesh *Tema1object2D::CreateHUDSlot(const std::string &name, glm::vec3 center,
-                                   float length, glm::vec3 borderColor,
-                                   glm::vec3 defenderColor) {
+                                   float length, glm::vec3 borderColor) {
     std::vector<glm::vec3> displacements = {
             glm::vec3(length / 2, length / 2, 0),
             glm::vec3(length / 2, -length / 2, 0),

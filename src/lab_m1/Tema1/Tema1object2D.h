@@ -23,7 +23,7 @@ namespace Tema1object2D {
                      glm::vec3 color);
 
     Mesh *CreateHUDSlot(const std::string &name, glm::vec3 center, float length,
-                        glm::vec3 borderColor, glm::vec3 defenderColor);
+                        glm::vec3 borderColor);
 
     /**
      * Attacker's move animation
