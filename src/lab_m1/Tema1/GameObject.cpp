@@ -3,7 +3,11 @@
 //
 
 #include "GameObject.h"
+#include "components/simple_scene.h"
+
 #include <string>
+
+#define DEFAULT_GAMEOBJECT_NAME "NONAME"
 
 GameObject::GameObject() : scale(1.0f), angle(0.0f), x(0.0f), y(0.0f), z(0.0f), name(DEFAULT_GAMEOBJECT_NAME),
                            center(glm::vec3(0)) {}

@@ -5,14 +5,17 @@
 #ifndef GFXFRAMEWORK_GAMESLOT_H
 #define GFXFRAMEWORK_GAMESLOT_H
 
+#include "PassiveGameObject.h"
 
-class GameSlot {
+class GameSlot : public PassiveGameObject {
 public:
+    explicit GameSlot(float side);
+
     float getSide() const;
 
     void setSide(float side);
 
-private:
+protected:
     float side;
 };
 

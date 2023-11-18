@@ -4,6 +4,8 @@
 
 #include "BoardBase.h"
 
+#include "components/simple_scene.h"
+
 Mesh *BoardBase::getMesh() {
 
     float halfWidth = width / 2;
@@ -29,4 +31,20 @@ Mesh *BoardBase::getMesh() {
     mesh->InitFromData(vertices, indices);
 
     return mesh;
+}
+
+float BoardBase::getWidth() const {
+    return width;
+}
+
+void BoardBase::setWidth(float width) {
+    BoardBase::width = width;
+}
+
+float BoardBase::getHeight() const {
+    return height;
+}
+
+void BoardBase::setHeight(float height) {
+    BoardBase::height = height;
 }

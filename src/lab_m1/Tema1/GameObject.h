@@ -8,8 +8,6 @@
 #include "components/simple_scene.h"
 #include <string>
 
-#define DEFAULT_GAMEOBJECT_NAME "NONAME"
-
 class GameObject {
 public:
     GameObject();

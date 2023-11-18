@@ -4,18 +4,16 @@
 
 #include "BoardSlot.h"
 
-BoardSlot::BoardSlot() {}
 
 Mesh *BoardSlot::getMesh() {
 
-    float halfWidth = width / 2;
-    float halfHeight = height / 2;
+    float halfSide = side / 2;
 
     std::vector<glm::vec3> offsets = {
-            glm::vec3(halfWidth, halfHeight, z),    // 0
-            glm::vec3(-halfWidth, halfHeight, z),   // 1
-            glm::vec3(-halfWidth, -halfHeight, z),  // 2
-            glm::vec3(halfWidth, -halfHeight, z),   // 3
+            glm::vec3(halfSide, halfSide, z),   // 0
+            glm::vec3(-halfSide, halfSide, z),  // 1
+            glm::vec3(-halfSide, -halfSide, z), // 2
+            glm::vec3(halfSide, -halfSide, z),  // 3
     };
 
     std::vector<VertexFormat> vertices;
@@ -24,7 +22,7 @@ Mesh *BoardSlot::getMesh() {
     }
 
     std::vector<unsigned int> indices = {
-            0, 1, 2, 0, 1, 3
+            0, 1, 2, 0, 2, 3
     };
 
     Mesh *mesh = new Mesh(name);

@@ -5,11 +5,10 @@
 #ifndef GFXFRAMEWORK_BOARDSLOT_H
 #define GFXFRAMEWORK_BOARDSLOT_H
 
-#include "PassiveGameObject.h"
+#include "GameSlot.h"
 
-class BoardSlot : public PassiveGameObject {
+class BoardSlot : public GameSlot {
 public:
-    BoardSlot();
 
     Mesh *getMesh() override;
 };

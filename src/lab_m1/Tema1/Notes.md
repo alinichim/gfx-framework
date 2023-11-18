@@ -1,10 +1,18 @@
 ### Tasks
 
-- [x] Implement animations
-    - [x] Projectile
-    - [x] Attacker
-- [x] Implement HUD
-- [ ] Attacker logic
+- [ ] Implement game objects classes
+    - [x] GameObject
+        - [x] PassiveGameObject
+            - [x] GameSlot
+                - [x] BoardSlot
+                - [ ] HUDSlot
+            - [x] BoardBase
+            - [ ] GamePoint
+            - [ ] HUDHealthBar
+        - [ ] ActiveGameObject
+            - [ ] Defender
+            - [ ] Attacker
+            - [ ] Projectile
 
 ### Issues
 
@@ -23,7 +31,7 @@ for defender in defenders:
             continue
 
         # start shooting
-        
+
         projectiles.append(projectile())
 
 ```
