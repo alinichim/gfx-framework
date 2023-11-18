@@ -5,6 +5,7 @@
 #include "lab_m1/Tema1/PassiveGameObject.h"
 #include "lab_m1/Tema1/GameSlot.h"
 #include "lab_m1/Tema1/BoardSlot.h"
+#include "lab_m1/Tema1/HUDSlot.h"
 #include "lab_m1/Tema1/BoardBase.h"
 #include "lab_m1/lab1/lab1.h"
 #include "lab_m1/lab2/lab2.h"
