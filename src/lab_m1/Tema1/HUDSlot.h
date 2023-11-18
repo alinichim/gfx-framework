@@ -10,7 +10,16 @@
 class HUDSlot : public GameSlot {
 
 public:
+    HUDSlot(float side, int price);
+
     Mesh *getMesh() override;
+
+    int getPrice() const;
+
+    void setPrice(int price);
+
+private:
+    int price;
 };
 
 

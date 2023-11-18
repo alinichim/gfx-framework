@@ -30,3 +30,13 @@ Mesh *HUDSlot::getMesh() {
 
     return mesh;
 }
+
+HUDSlot::HUDSlot(float side, int price) : GameSlot(side), price(price) {}
+
+int HUDSlot::getPrice() const {
+    return price;
+}
+
+void HUDSlot::setPrice(int price) {
+    this->price = price;
+}
