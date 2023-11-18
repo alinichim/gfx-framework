@@ -5,10 +5,10 @@
         - [x] PassiveGameObject
             - [x] GameSlot
                 - [x] BoardSlot
-                - [ ] HUDSlot
+                - [x] HUDSlot
             - [x] BoardBase
-            - [ ] GamePoint
-            - [ ] HUDHealthBar
+            - [x] GamePoint
+            - [x] HUDHealthBar
         - [ ] ActiveGameObject
             - [ ] Defender
             - [ ] Attacker
