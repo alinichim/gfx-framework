@@ -5,11 +5,19 @@
 #include <random>
 #include <utility>
 
-#define SLOT_SIDE 80.0f
-#define BASE_WIDTH 50.0f
-#define BASE_LEFT_PADDING 50.0f
+#include "BoardSlot.h"
+#include "HUDSlot.h"
+#include "BoardBase.h"
+#include "HUDHealthBar.h"
+#include "GamePoint.h"
+
+
+#define GAMESLOT_SIDE 80.0f
+#define BOARDBASE_WIDTH 50.0f
+#define BOARDBASE_LEFT_PADDING 50.0f
 #define SLOT_PADDING 20.0f
 #define FOOTER_PADDING 50.0f
+#define GAMEPOINT_RADIUS 10.0f
 #define HUD_LEFT_PADDING 100.0f
 
 namespace m1 {
@@ -46,5 +54,10 @@ namespace m1 {
         void OnWindowResize(int width, int height) override;
 
     protected:
+        std::vector<BoardSlot> boardSlots;
+        std::vector<HUDSlot> hudSlots;
+        BoardBase boardBase;
+        HUDHealthBar hudHealthBar;
+        GamePoint gamePoint;
     };
 } // namespace m1
