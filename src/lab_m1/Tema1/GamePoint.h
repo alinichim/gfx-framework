@@ -9,6 +9,8 @@
 
 class GamePoint : public PassiveGameObject {
 public:
+    GamePoint();
+
     explicit GamePoint(float radius);
 
     std::vector<glm::vec3> getOffsets();

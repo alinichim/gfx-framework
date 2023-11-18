@@ -9,6 +9,7 @@
 
 class BoardSlot : public GameSlot {
 public:
+    explicit BoardSlot(float side);
 
     Mesh *getMesh() override;
 };

@@ -83,3 +83,5 @@ float HUDHealthBar::getPadding() const {
 void HUDHealthBar::setPadding(float padding) {
     this->padding = padding;
 }
+
+HUDHealthBar::HUDHealthBar() : hp(0), points(0), pointsColor(glm::vec3(0, 0, 0)), side(0), padding(0) {}

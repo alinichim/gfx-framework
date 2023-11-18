@@ -58,3 +58,5 @@ Mesh *GamePoint::getMesh() {
 
     return mesh;
 }
+
+GamePoint::GamePoint() : radius(0.0f) {}

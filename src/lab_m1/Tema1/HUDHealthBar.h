@@ -9,6 +9,8 @@
 
 class HUDHealthBar : public PassiveGameObject {
 public:
+    HUDHealthBar();
+
     HUDHealthBar(int hp, int points, const glm::vec3 pointsColor, float side, float padding);
 
     Mesh *getMesh() override;

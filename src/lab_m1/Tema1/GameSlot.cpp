@@ -11,3 +11,5 @@ float GameSlot::getSide() const {
 void GameSlot::setSide(float side) {
     this->side = side;
 }
+
+GameSlot::GameSlot(float side) : side(side) {}

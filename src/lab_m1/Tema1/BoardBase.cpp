@@ -24,7 +24,7 @@ Mesh *BoardBase::getMesh() {
     }
 
     std::vector<unsigned int> indices = {
-            0, 1, 2, 0, 1, 3
+            0, 1, 2, 0, 2, 3
     };
 
     Mesh *mesh = new Mesh(name);
@@ -48,3 +48,7 @@ float BoardBase::getHeight() const {
 void BoardBase::setHeight(float height) {
     BoardBase::height = height;
 }
+
+BoardBase::BoardBase(float width, float height) : width(width), height(height) {}
+
+BoardBase::BoardBase() : width(0), height(0) {}

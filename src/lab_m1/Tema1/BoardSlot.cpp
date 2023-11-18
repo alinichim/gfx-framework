@@ -30,3 +30,5 @@ Mesh *BoardSlot::getMesh() {
 
     return mesh;
 }
+
+BoardSlot::BoardSlot(float side) : GameSlot(side) {}

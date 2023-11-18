@@ -17,7 +17,7 @@ Mesh *HUDSlot::getMesh() {
 
     std::vector<VertexFormat> vertices;
     for (auto offset: offsets) {
-        vertices.push_back(VertexFormat(center + offset, glm::vec3(0, 0, 1)));
+        vertices.push_back(VertexFormat(center + offset, color));
     }
 
     std::vector<unsigned int> indices = {

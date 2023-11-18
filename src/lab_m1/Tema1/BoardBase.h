@@ -10,6 +10,10 @@
 
 class BoardBase : public PassiveGameObject {
 public:
+    BoardBase();
+
+    BoardBase(float width, float height);
+
     Mesh *getMesh() override;
 
     float getWidth() const;
