@@ -230,10 +230,14 @@ void Tema1::Update(float deltaTimeSeconds) {
 
     // Attacker detection
     for (auto &defender: defenders) {
+        bool alreadyShot = false;
         for (auto &attacker: attackers) {
             if (glm::distance(glm::vec2(attacker.getX(), attacker.getY()),
                               glm::vec2(defender.getX(), defender.getY())) < GAMESLOT_SIDE / 2) {
                 defender.setHp(0);
+            }
+            if (alreadyShot) {
+                break;
             }
             if (defender.getHp() == 0) {
                 continue;
@@ -245,8 +249,9 @@ void Tema1::Update(float deltaTimeSeconds) {
                 attacker.getX() > defender.getX()) {
                 defender.setDeltaTime(defender.getDeltaTime() + deltaTimeSeconds);
                 if (defender.getDeltaTime() < defender.getFireRate()) {
-                    continue;
+                    break;
                 }
+                alreadyShot = true;
                 defender.setDeltaTime(defender.getDeltaTime() - defender.getFireRate());
                 // Shoot projectile
                 Projectile newProjectile;
@@ -320,8 +325,6 @@ void Tema1::OnMouseMove(int mouseX, int mouseY, int deltaX, int deltaY) {
 
 void Tema1::OnMouseBtnPress(int mouseX, int mouseY, int button, int mods) {
 
-    std::cout << "Button press: " << button << " " << mods << std::endl;
-
     if (button == GLFW_MOUSE_BUTTON_2) {
         LeftMouseButtonPressed(mouseX, mouseY);
     } else if (button == GLFW_MOUSE_BUTTON_3) {
@@ -330,7 +333,6 @@ void Tema1::OnMouseBtnPress(int mouseX, int mouseY, int button, int mods) {
 }
 
 void Tema1::OnMouseBtnRelease(int mouseX, int mouseY, int button, int mods) {
-    std::cout << "Button release: " << button << " " << mods << std::endl;
     // Add mouse button release event
     if (button == GLFW_MOUSE_BUTTON_2) {
         if (!defenderSelected) {
