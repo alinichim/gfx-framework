@@ -4,7 +4,9 @@
 
 #include "Projectile.h"
 
-Projectile::Projectile() : speed(0.0f), radius(0.0f) {}
+Projectile::Projectile() : speed(0.0f), radius(0.0f) {
+    Projectile::hp = 1;
+}
 
 float Projectile::getSpeed() const {
     return speed;

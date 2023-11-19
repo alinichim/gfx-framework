@@ -1,6 +1,6 @@
 ### Tasks
 
-- [ ] Implement game objects classes
+- [x] Implement game objects classes
     - [x] GameObject
         - [x] PassiveGameObject
             - [x] GameSlot
@@ -9,10 +9,10 @@
             - [x] BoardBase
             - [x] GamePoint
             - [x] HUDHealthBar
-        - [ ] ActiveGameObject
-            - [ ] Defender
-            - [ ] Attacker
-            - [ ] Projectile
+        - [x] ActiveGameObject
+            - [x] Defender
+            - [x] Attacker
+            - [x] Projectile
 
 ### Issues
 

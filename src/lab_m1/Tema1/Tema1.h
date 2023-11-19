@@ -10,6 +10,9 @@
 #include "BoardBase.h"
 #include "HUDHealthBar.h"
 #include "GamePoint.h"
+#include "Defender.h"
+#include "Attacker.h"
+#include "Projectile.h"
 
 
 #define GAMESLOT_SIDE 80.0f
@@ -19,6 +22,16 @@
 #define FOOTER_PADDING 50.0f
 #define GAMEPOINT_RADIUS 10.0f
 #define HUD_LEFT_PADDING 100.0f
+
+#define ZLEVEL_1 0.0f
+#define ZLEVEL_2 10.0f
+#define ZLEVEL_3 20.0f
+
+#define ATTACKER_FR_MIN 8.0f
+#define ATTACKER_FR_MAX 10.0f
+
+#define ATTACKER_SPEED 60.0f
+#define PROJECTILE_SPEED 90.0f
 
 namespace m1 {
 
@@ -53,11 +66,32 @@ namespace m1 {
 
         void OnWindowResize(int width, int height) override;
 
+        void RenderObjects();
+
+        void LeftMouseButtonPressed(int mouseX, int mouseY);
+
+        void RightMouseButtonPressed(int mouseX, int mouseY);
+
     protected:
         std::vector<BoardSlot> boardSlots;
         std::vector<HUDSlot> hudSlots;
+        std::vector<Defender> defenderExamples;
+        std::vector<Defender> defenders;
+        std::vector<Attacker> attackers;
+        std::vector<Projectile> projectiles;
+        std::vector<GamePoint> collectableGamePoints;
         BoardBase boardBase;
         HUDHealthBar hudHealthBar;
         GamePoint gamePoint;
+        GamePoint collectablePoint;
+
+        const float pointsInterval = 8.0f;
+        float pointsDeltaInterval = 0.0f;
+        const int numberOfPoints = 3;
+
+        float attackerDeltaInterval = 0.0f;
+
+        bool defenderSelected = false;
+        Defender selectedDefender;
     };
 } // namespace m1

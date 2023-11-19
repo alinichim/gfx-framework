@@ -4,7 +4,10 @@
 
 #include "Defender.h"
 
-Defender::Defender() : fireRate(0.0f), length(0.0f) {}
+Defender::Defender() : fireRate(1.5f), length(0.0f), deltaTime(0.0f) {
+    Defender::hp = 1;
+}
+
 
 float Defender::getFireRate() const {
     return fireRate;
@@ -54,4 +57,15 @@ Mesh *Defender::getMesh() {
     mesh->InitFromData(vertices, indices);
 
     return mesh;
+}
+
+Defender::Defender(float fireRate, float length, float deltaTime) : fireRate(fireRate), length(length),
+                                                                    deltaTime(deltaTime) {}
+
+float Defender::getDeltaTime() const {
+    return deltaTime;
+}
+
+void Defender::setDeltaTime(float deltaTime) {
+    Defender::deltaTime = deltaTime;
 }

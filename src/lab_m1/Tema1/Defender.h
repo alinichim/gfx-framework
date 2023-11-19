@@ -11,6 +11,8 @@ class Defender : public ActiveGameObject {
 public:
     Defender();
 
+    Defender(float fireRate, float length, float deltaTime);
+
     Mesh *getMesh() override;
 
     float getFireRate() const;
@@ -21,9 +23,14 @@ public:
 
     void setLength(float length);
 
+    float getDeltaTime() const;
+
+    void setDeltaTime(float deltaTime);
+
 private:
     float fireRate;
     float length;
+    float deltaTime;
 };
 
 
