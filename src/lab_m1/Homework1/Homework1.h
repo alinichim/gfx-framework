@@ -35,11 +35,11 @@
 
 namespace m1 {
 
-    class Tema1 : public gfxc::SimpleScene {
+    class Homework1 : public gfxc::SimpleScene {
     public:
-        Tema1();
+        Homework1();
 
-        ~Tema1() override;
+        ~Homework1() override;
 
         void Init() override;
 

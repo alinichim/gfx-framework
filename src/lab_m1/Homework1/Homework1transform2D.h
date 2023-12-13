@@ -4,7 +4,7 @@
 
 #include "utils/glm_utils.h"
 
-namespace Tema1transform2D {
+namespace Homework1transform2D {
 // Translate matrix
     inline glm::mat3 Translate(float translateX, float translateY) {
         // Implement the translation matrix
@@ -23,4 +23,4 @@ namespace Tema1transform2D {
         return glm::transpose(glm::mat3(cos(radians), -sin(radians), 0, sin(radians),
                                         cos(radians), 0, 0, 0, 1));
     }
-}  // namespace Tema1transform2D
+}  // namespace Homework1transform2D

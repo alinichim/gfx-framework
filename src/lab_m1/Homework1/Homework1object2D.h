@@ -5,7 +5,7 @@
 #include "core/gpu/mesh.h"
 #include "utils/glm_utils.h"
 
-namespace Tema1object2D {
+namespace Homework1object2D {
 
     Mesh *CreateSlot(const std::string &name, glm::vec3 center, float length,
                      glm::vec3 color);
@@ -38,4 +38,4 @@ namespace Tema1object2D {
      * @return Animation's transform matrix
      */
     glm::mat3 ProjectileMoveAnimation(float delta, float deltaX, float deltaY);
-} // namespace Tema1object2D
+} // namespace Homework1object2D

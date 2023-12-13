@@ -1,17 +1,17 @@
 #include <iostream>
-#include "lab_m1/Tema1/Tema1.h"
+#include "lab_m1/Homework1/Homework1.h"
 
 #include "BoardBase.h"
 
-#include "lab_m1/Tema1/Tema1object2D.h"
-#include "lab_m1/Tema1/Tema1transform2D.h"
+#include "lab_m1/Homework1/Homework1object2D.h"
+#include "lab_m1/Homework1/Homework1transform2D.h"
 
 using namespace std;
 using namespace m1;
 
-Tema1::~Tema1() = default;
+Homework1::~Homework1() = default;
 
-void Tema1::Init() {
+void Homework1::Init() {
     glm::ivec2 resolution = window->GetResolution();
     auto camera = GetSceneCamera();
     camera->SetOrthographic(0, (float) resolution.x, 0, (float) resolution.y, 0.01f,
@@ -117,7 +117,7 @@ void Tema1::Init() {
     AddMeshToList(collectablePoint.getMesh());
 }
 
-void Tema1::FrameStart() {
+void Homework1::FrameStart() {
     // Clears the color buffer (using the previously set color) and depth buffer
     glClearColor(0.2f, 0.2f, 0.2f, 1);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -127,7 +127,7 @@ void Tema1::FrameStart() {
     glViewport(0, 0, resolution.x, resolution.y);
 }
 
-void Tema1::Update(float deltaTimeSeconds) {
+void Homework1::Update(float deltaTimeSeconds) {
 
     if (hudHealthBar.getHp() == 0) {
         window->Close();
@@ -298,24 +298,24 @@ void Tema1::Update(float deltaTimeSeconds) {
     }
 }
 
-void Tema1::FrameEnd() {}
+void Homework1::FrameEnd() {}
 
 /*
  *  These are callback functions. To find more about callbacks and
  *  how they behave, see `input_controller.h`.
  */
 
-void Tema1::OnInputUpdate(float deltaTime, int mods) {}
+void Homework1::OnInputUpdate(float deltaTime, int mods) {}
 
-void Tema1::OnKeyPress(int key, int mods) {
+void Homework1::OnKeyPress(int key, int mods) {
     // Add key press event
 }
 
-void Tema1::OnKeyRelease(int key, int mods) {
+void Homework1::OnKeyRelease(int key, int mods) {
     // Add key release event
 }
 
-void Tema1::OnMouseMove(int mouseX, int mouseY, int deltaX, int deltaY) {
+void Homework1::OnMouseMove(int mouseX, int mouseY, int deltaX, int deltaY) {
     // Add mouse move event
     if (defenderSelected) {
         selectedDefender.setX(mouseX);
@@ -323,7 +323,7 @@ void Tema1::OnMouseMove(int mouseX, int mouseY, int deltaX, int deltaY) {
     }
 }
 
-void Tema1::OnMouseBtnPress(int mouseX, int mouseY, int button, int mods) {
+void Homework1::OnMouseBtnPress(int mouseX, int mouseY, int button, int mods) {
 
     if (button == GLFW_MOUSE_BUTTON_2) {
         LeftMouseButtonPressed(mouseX, mouseY);
@@ -332,7 +332,7 @@ void Tema1::OnMouseBtnPress(int mouseX, int mouseY, int button, int mods) {
     }
 }
 
-void Tema1::OnMouseBtnRelease(int mouseX, int mouseY, int button, int mods) {
+void Homework1::OnMouseBtnRelease(int mouseX, int mouseY, int button, int mods) {
     // Add mouse button release event
     if (button == GLFW_MOUSE_BUTTON_2) {
         if (!defenderSelected) {
@@ -379,11 +379,11 @@ void Tema1::OnMouseBtnRelease(int mouseX, int mouseY, int button, int mods) {
     defenderSelected = false;
 }
 
-void Tema1::OnMouseScroll(int mouseX, int mouseY, int offsetX, int offsetY) {}
+void Homework1::OnMouseScroll(int mouseX, int mouseY, int offsetX, int offsetY) {}
 
-void Tema1::OnWindowResize(int width, int height) {}
+void Homework1::OnWindowResize(int width, int height) {}
 
-void Tema1::RenderObjects() {
+void Homework1::RenderObjects() {
 
     // Viewport
     glm::ivec2 resolution = window->GetResolution();
@@ -394,13 +394,13 @@ void Tema1::RenderObjects() {
     float scale = 0.0f;
 
     // Render board base
-    modelMatrix *= Tema1transform2D::Translate(boardBase.getX(), boardBase.getY());
+    modelMatrix *= Homework1transform2D::Translate(boardBase.getX(), boardBase.getY());
     RenderMesh2D(meshes[boardBase.getName()], shaders["VertexColor"], modelMatrix);
 
     // Render board slots
     for (int i = 0; i < 3; i++) {
         for (int j = 0; j < 3; j++) {
-            modelMatrix = Tema1transform2D::Translate(boardSlots[i * 3 + j].getX(), boardSlots[i * 3 + j].getY());
+            modelMatrix = Homework1transform2D::Translate(boardSlots[i * 3 + j].getX(), boardSlots[i * 3 + j].getY());
             RenderMesh2D(meshes[boardSlots[0].getName()], shaders["VertexColor"], modelMatrix);
         }
     }
@@ -413,33 +413,33 @@ void Tema1::RenderObjects() {
         slot.setX(translateX);
         slot.setY(translateY);
     }
-    modelMatrix *= Tema1transform2D::Translate(translateX, translateY);
+    modelMatrix *= Homework1transform2D::Translate(translateX, translateY);
     for (int i = 0; i < 4; i++) {
         glm::mat3 tempModelMatrix = modelMatrix;
         translateX = (float) i * (GAMESLOT_SIDE + SLOT_PADDING);
         hudSlots[i].setX(hudSlots[i].getX() + translateX);
-        tempModelMatrix *= Tema1transform2D::Translate(translateX, 0);
+        tempModelMatrix *= Homework1transform2D::Translate(translateX, 0);
         RenderMesh2D(meshes[hudSlots[0].getName()], shaders["VertexColor"], tempModelMatrix);
     }
     // Render Defender prices
     for (int i = 0; i < 4; i++) {
-        modelMatrix = Tema1transform2D::Translate(hudSlots[i].getX(), hudSlots[i].getY());
+        modelMatrix = Homework1transform2D::Translate(hudSlots[i].getX(), hudSlots[i].getY());
         translateX = -hudSlots[i].getSide() / 2 + gamePoint.getRadius();
         translateY = -hudSlots[i].getSide() / 2 - gamePoint.getRadius();
-        modelMatrix *= Tema1transform2D::Translate(translateX, translateY);
+        modelMatrix *= Homework1transform2D::Translate(translateX, translateY);
         RenderMesh2D(meshes[gamePoint.getName()], shaders["VertexColor"], modelMatrix);
         if (i > 0) {
-            modelMatrix *= Tema1transform2D::Translate(gamePoint.getRadius() * 2.0f, 0);
+            modelMatrix *= Homework1transform2D::Translate(gamePoint.getRadius() * 2.0f, 0);
             RenderMesh2D(meshes[gamePoint.getName()], shaders["VertexColor"], modelMatrix);
         }
         if (i > 2) {
-            modelMatrix *= Tema1transform2D::Translate(gamePoint.getRadius() * 2.0f, 0);
+            modelMatrix *= Homework1transform2D::Translate(gamePoint.getRadius() * 2.0f, 0);
             RenderMesh2D(meshes[gamePoint.getName()], shaders["VertexColor"], modelMatrix);
         }
     }
     // Render Defender examples
     for (int i = 0; i < 4; i++) {
-        modelMatrix = Tema1transform2D::Translate(hudSlots[i].getX(), hudSlots[i].getY());
+        modelMatrix = Homework1transform2D::Translate(hudSlots[i].getX(), hudSlots[i].getY());
         RenderMesh2D(meshes[defenderExamples[i].getName()], shaders["VertexColor"], modelMatrix);
     }
 
@@ -448,50 +448,50 @@ void Tema1::RenderObjects() {
     translateY = hudSlots[3].getY();
     hudHealthBar.setX(translateX);
     hudHealthBar.setY(translateY);
-    modelMatrix = Tema1transform2D::Translate(translateX, translateY);
+    modelMatrix = Homework1transform2D::Translate(translateX, translateY);
     RenderMesh2D(meshes[hudHealthBar.getName()], shaders["VertexColor"], modelMatrix);
     // Render collected points
     translateX = hudHealthBar.getX() - GAMESLOT_SIDE / 2 + gamePoint.getRadius();
     translateY = hudHealthBar.getY() - GAMESLOT_SIDE / 2 - gamePoint.getRadius();
-    modelMatrix = Tema1transform2D::Translate(translateX, translateY);
+    modelMatrix = Homework1transform2D::Translate(translateX, translateY);
     for (int i = 0; i < hudHealthBar.getPoints(); i++) {
         RenderMesh2D(meshes[gamePoint.getName()], shaders["VertexColor"], modelMatrix);
-        modelMatrix *= Tema1transform2D::Translate(gamePoint.getRadius() * 2.0f, 0);
+        modelMatrix *= Homework1transform2D::Translate(gamePoint.getRadius() * 2.0f, 0);
     }
 
     // Render collectable game points
     for (auto &point: collectableGamePoints) {
-        modelMatrix = Tema1transform2D::Translate(point.getX(), point.getY());
+        modelMatrix = Homework1transform2D::Translate(point.getX(), point.getY());
         RenderMesh2D(meshes[collectablePoint.getName()], shaders["VertexColor"], modelMatrix);
     }
 
     // Render attackers
     for (auto &attacker: attackers) {
-        modelMatrix = Tema1transform2D::Translate(attacker.getX(), attacker.getY());
-        modelMatrix *= Tema1transform2D::Scale(attacker.getScale(), attacker.getScale());
+        modelMatrix = Homework1transform2D::Translate(attacker.getX(), attacker.getY());
+        modelMatrix *= Homework1transform2D::Scale(attacker.getScale(), attacker.getScale());
         RenderMesh2D(meshes[attacker.getName()], shaders["VertexColor"], modelMatrix);
     }
 
     // Render Projectiles
     for (auto &projectile: projectiles) {
-        modelMatrix = Tema1transform2D::Translate(projectile.getX(), projectile.getY());
-        modelMatrix *= Tema1transform2D::Rotate(projectile.getAngle());
+        modelMatrix = Homework1transform2D::Translate(projectile.getX(), projectile.getY());
+        modelMatrix *= Homework1transform2D::Rotate(projectile.getAngle());
         RenderMesh2D(meshes[projectile.getName()], shaders["VertexColor"], modelMatrix);
     }
 
     // Render defenders
     for (auto &defender: defenders) {
-        modelMatrix = Tema1transform2D::Translate(defender.getX(), defender.getY());
-        modelMatrix *= Tema1transform2D::Scale(defender.getScale(), defender.getScale());
+        modelMatrix = Homework1transform2D::Translate(defender.getX(), defender.getY());
+        modelMatrix *= Homework1transform2D::Scale(defender.getScale(), defender.getScale());
         RenderMesh2D(meshes[defender.getName()], shaders["VertexColor"], modelMatrix);
     }
     if (defenderSelected) {
-        modelMatrix = Tema1transform2D::Translate(selectedDefender.getX(), selectedDefender.getY());
+        modelMatrix = Homework1transform2D::Translate(selectedDefender.getX(), selectedDefender.getY());
         RenderMesh2D(meshes[selectedDefender.getName()], shaders["VertexColor"], modelMatrix);
     }
 }
 
-void Tema1::LeftMouseButtonPressed(int mouseX, int mouseY) {
+void Homework1::LeftMouseButtonPressed(int mouseX, int mouseY) {
 
     // Check game points
     for (int i = 0; i < collectableGamePoints.size(); i++) {
@@ -526,7 +526,7 @@ void Tema1::LeftMouseButtonPressed(int mouseX, int mouseY) {
     }
 }
 
-void Tema1::RightMouseButtonPressed(int mouseX, int mouseY) {
+void Homework1::RightMouseButtonPressed(int mouseX, int mouseY) {
 
     // Check defenders
     for (auto &defender: defenders) {
@@ -538,4 +538,4 @@ void Tema1::RightMouseButtonPressed(int mouseX, int mouseY) {
     }
 }
 
-Tema1::Tema1() = default;
+Homework1::Homework1() = default;

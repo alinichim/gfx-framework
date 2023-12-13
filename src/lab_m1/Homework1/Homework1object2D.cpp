@@ -1,14 +1,14 @@
-#include "Tema1object2D.h"
+#include "Homework1object2D.h"
 
 #include <cmath>
 
 #include <vector>
 
 #include "core/engine.h"
-#include "lab_m1/Tema1/Tema1transform2D.h"
+#include "lab_m1/Homework1/Homework1transform2D.h"
 #include "utils/gl_utils.h"
 
-Mesh *Tema1object2D::CreateSlot(const std::string &name, glm::vec3 center,
+Mesh *Homework1object2D::CreateSlot(const std::string &name, glm::vec3 center,
                                 float length, glm::vec3 color) {
     float halfLength = length / 2;
 
@@ -37,7 +37,7 @@ Mesh *Tema1object2D::CreateSlot(const std::string &name, glm::vec3 center,
     return square;
 }
 
-Mesh *Tema1object2D::CreateBase(const std::string &name, glm::vec3 center,
+Mesh *Homework1object2D::CreateBase(const std::string &name, glm::vec3 center,
                                 float width, float height, glm::vec3 color) {
     float halfWidth = width / 2;
     float halfHeight = height / 2;
@@ -67,7 +67,7 @@ Mesh *Tema1object2D::CreateBase(const std::string &name, glm::vec3 center,
     return rectangle;
 }
 
-Mesh *Tema1object2D::CreateDefender(const std::string &name, glm::vec3 center,
+Mesh *Homework1object2D::CreateDefender(const std::string &name, glm::vec3 center,
                                     float length, glm::vec3 color) {
     float halfLength = length / 2;
     float thirdHalfLength = halfLength / 3;
@@ -111,7 +111,7 @@ Mesh *Tema1object2D::CreateDefender(const std::string &name, glm::vec3 center,
     return diamond;
 }
 
-Mesh *Tema1object2D::CreateAttacker(const std::string &name, glm::vec3 center,
+Mesh *Homework1object2D::CreateAttacker(const std::string &name, glm::vec3 center,
                                     float length, glm::vec3 colorOuter,
                                     glm::vec3 colorInner) {
     float innerLength = length * 0.70f;
@@ -176,7 +176,7 @@ Mesh *Tema1object2D::CreateAttacker(const std::string &name, glm::vec3 center,
     return enemy;
 }
 
-Mesh *Tema1object2D::CreateStar(const std::string &name, glm::vec3 center,
+Mesh *Homework1object2D::CreateStar(const std::string &name, glm::vec3 center,
                                 float length, glm::vec3 color) {
     float halfLength = length / 2;
     float slice = 2 * M_PI / 5;
@@ -241,7 +241,7 @@ Mesh *Tema1object2D::CreateStar(const std::string &name, glm::vec3 center,
     return star;
 }
 
-Mesh *Tema1object2D::CreateHUDSlot(const std::string &name, glm::vec3 center,
+Mesh *Homework1object2D::CreateHUDSlot(const std::string &name, glm::vec3 center,
                                    float length, glm::vec3 borderColor) {
     std::vector<glm::vec3> displacements = {
             glm::vec3(length / 2, length / 2, 0),
@@ -266,20 +266,20 @@ Mesh *Tema1object2D::CreateHUDSlot(const std::string &name, glm::vec3 center,
     return hudSlot;
 }
 
-glm::mat3 Tema1object2D::AttackerMoveAnimation(float delta) {
+glm::mat3 Homework1object2D::AttackerMoveAnimation(float delta) {
 
-    return Tema1transform2D::Translate(-delta * 10, 0);
+    return Homework1transform2D::Translate(-delta * 10, 0);
 }
 
-glm::mat3 Tema1object2D::ProjectileMoveAnimation(float deltaTime, float deltaX, float deltaY) {
+glm::mat3 Homework1object2D::ProjectileMoveAnimation(float deltaTime, float deltaX, float deltaY) {
 
     glm::mat3 result = glm::mat3(1);
 
     // Translation
-    result *= Tema1transform2D::Translate(-deltaTime * 50, 0);
+    result *= Homework1transform2D::Translate(-deltaTime * 50, 0);
 
     // Rotation
-    result *= Tema1transform2D::Rotate(deltaTime);
+    result *= Homework1transform2D::Rotate(deltaTime);
 
     return result;
 }
