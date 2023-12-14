@@ -36,3 +36,5 @@ bool WOTGameObject::collision(WOTGameObject object) {
     margin -= glm::distance(object.getPosition(), position);
     return (margin > 0) && (margin < 0.05f);
 }
+
+WOTGameObject::WOTGameObject() : position(glm::vec3(0)), collision_range(0), forward(glm::vec3(0, 0, 1)) {}

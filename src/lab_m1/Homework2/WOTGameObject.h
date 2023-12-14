@@ -12,6 +12,8 @@ class WOTGameObject {
 public:
     WOTGameObject(const glm::vec3 &position, const glm::vec3 &forward, float collisionMargin);
 
+    WOTGameObject();
+
     bool collision(WOTGameObject object);
 
     const glm::vec3 &getPosition() const;

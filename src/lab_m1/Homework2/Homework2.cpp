@@ -5,6 +5,7 @@
 
 #include <vector>
 #include <string>
+#include <iostream>
 
 using namespace std;
 using namespace m1;
@@ -85,7 +86,6 @@ void Homework2::Init()
     camera->distanceToTarget = glm::distance(camera->position, glm::vec3(0, 3, 0));
 
     projectionMatrix = glm::perspective(RADIANS(fov), window->props.aspectRatio, z_near, z_far);
-
 }
 
 
@@ -100,45 +100,38 @@ void Homework2::FrameStart()
     glViewport(0, 0, resolution.x, resolution.y);
 }
 
+float clamp_rotation(float x, float min=-M_PI / 4, float max=M_PI / 10) {
+    if (x < min) {
+        return min;
+    } else if (x > max) {
+        return max;
+    }
+    return x;
+}
+
 void Homework2::Render_Player_Tank() {
     {
+        // Body
         glm::mat4 modelMatrix = glm::mat4(1.0f);
+        modelMatrix = glm::translate(modelMatrix, player_tank.getPosition());
+        std::cout << player_tank.getForward().x << " " << player_tank.getForward().y << " " << player_tank.getForward().z << std::endl;
+        modelMatrix = glm::rotate(modelMatrix, player_tank.getBodyRotationY(), glm::vec3(0, 1, 0));
         glm::vec3 color(0.0f);
         color.g = 0.15f;
         RenderSimpleMesh(meshes["tank_hull"], shaders["HomeworkShader"], modelMatrix, color);
-    }
-
-    {
-        glm::mat4 modelMatrix = glm::mat4(1.0f);
-        glm::vec3 color(0.0f);
         color.g = 0.1f;
         RenderSimpleMesh(meshes["tank_track_left"], shaders["HomeworkShader"], modelMatrix, color);
-    }
-
-    {
-        glm::mat4 modelMatrix = glm::mat4(1.0f);
-        glm::vec3 color(0.0f);
         color.g = 0.1f;
         RenderSimpleMesh(meshes["tank_track_right"], shaders["HomeworkShader"], modelMatrix, color);
-    }
-
-    {
-        glm::mat4 modelMatrix = glm::mat4(1.0f);
-        glm::vec3 color(0.0f);
         color.g = 0.05f;
         RenderSimpleMesh(meshes["tank_wheels_left"], shaders["HomeworkShader"], modelMatrix, color);
-    }
-
-    {
-        glm::mat4 modelMatrix = glm::mat4(1.0f);
-        glm::vec3 color(0.0f);
-        color.g = 0.05f;
         RenderSimpleMesh(meshes["tank_wheels_right"], shaders["HomeworkShader"], modelMatrix, color);
     }
 
     {
         glm::mat4 modelMatrix = glm::mat4(1.0f);
-        modelMatrix = glm::rotate(modelMatrix, turret_rot, glm::vec3(0, 1, 0));
+        modelMatrix = glm::translate(modelMatrix, player_tank.getPosition());
+        modelMatrix = glm::rotate(modelMatrix, player_tank.getTurretRotationY(), glm::vec3(0, 1, 0));
         glm::vec3 color(0.0f);
         color.g = 0.1f;
         RenderSimpleMesh(meshes["tank_turret"], shaders["HomeworkShader"], modelMatrix, color);
@@ -146,8 +139,11 @@ void Homework2::Render_Player_Tank() {
 
     {
         glm::mat4 modelMatrix = glm::mat4(1.0f);
-        modelMatrix = glm::rotate(modelMatrix, gun_rot_y, glm::vec3(0, 1, 0));
-        modelMatrix = glm::rotate(modelMatrix, gun_rot_x, glm::vec3(1, 0, 0));
+        modelMatrix = glm::translate(modelMatrix, player_tank.getPosition());
+        modelMatrix = glm::rotate(modelMatrix, player_tank.getTurretRotationY(), glm::vec3(0, 1, 0));
+        modelMatrix = glm::translate(modelMatrix, player_tank.getGunCenter());
+        modelMatrix = glm::rotate(modelMatrix, clamp_rotation(player_tank.getGunRotationX()), glm::vec3(1, 0, 0));
+        modelMatrix = glm::translate(modelMatrix, -player_tank.getGunCenter());
         glm::vec3 color(1.0f);
         color.g = 0.05f;
         RenderSimpleMesh(meshes["tank_gun"], shaders["HomeworkShader"], modelMatrix, color);
@@ -164,6 +160,7 @@ void Homework2::Update(float deltaTimeSeconds)
 //    }
 
     Render_Player_Tank();
+
 }
 
 
@@ -227,21 +224,21 @@ void Homework2::OnInputUpdate(float deltaTime, int mods)
     float cameraSpeed = 2.0f;
     // move the camera only if MOUSE_RIGHT button is pressed
     if (window->KeyHold(GLFW_KEY_W)) {
-        camera->MoveForward(cameraSpeed * deltaTime);
-        tz += cameraSpeed * deltaTime;
+        camera->MoveForward(player_tank.getSpeed() * deltaTime, player_tank.getForward());
+        player_tank.Move(deltaTime);
     }
 
     if (window->KeyHold(GLFW_KEY_A)) {
-        camera->TranslateRight(-cameraSpeed * deltaTime);
+        player_tank.Steer(deltaTime);
     }
 
     if (window->KeyHold(GLFW_KEY_S)) {
-        camera->MoveForward(-cameraSpeed * deltaTime);
-        tz += -cameraSpeed * deltaTime;
+        camera->MoveForward(player_tank.getSpeed() * -deltaTime, player_tank.getForward());
+        player_tank.Move(-deltaTime);
     }
 
     if (window->KeyHold(GLFW_KEY_D)) {
-        camera->TranslateRight(cameraSpeed * deltaTime);
+        player_tank.Steer(-deltaTime);
     }
 
     if (window->KeyHold(GLFW_KEY_Q)) {
@@ -273,9 +270,8 @@ void Homework2::OnMouseMove(int mouseX, int mouseY, int deltaX, int deltaY)
     float sensivityOY = 0.01f;
     camera->RotateThirdPerson_OX(-sensivityOX * deltaY);
     camera->RotateThirdPerson_OY(-sensivityOY * deltaX);
-    turret_rot += -sensivityOY * deltaX;
-    gun_rot_y += -sensivityOY * deltaX;
-    gun_rot_x += sensivityOX * deltaY;
+    player_tank.setTurretRotationY(player_tank.getTurretRotationY()+ -sensivityOY * deltaX);
+    player_tank.setGunRotationX(player_tank.getGunRotationX()+ sensivityOX * deltaY);
 }
 
 

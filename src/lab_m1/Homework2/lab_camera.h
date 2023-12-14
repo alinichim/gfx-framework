@@ -40,6 +40,16 @@ class Camera {
     position += dir * distance;
   }
 
+    void MoveForward(float distance, glm::vec3(alt_forward)) {
+        // Translates the camera using the `dir` vector computed from
+        // `forward`. Movement will always keep the camera at the same
+        // height. For example, if you rotate your head up/down, and then
+        // walk forward, then you will still keep the same relative
+        // distance (height) to the ground!
+        glm::vec3 dir = glm::normalize(glm::vec3(alt_forward.x, 0, alt_forward.z));
+        position += dir * distance;
+    }
+
   void TranslateForward(float distance) {
     // TODO(student): Translate the camera using the `forward` vector.
     // What's the difference between `TranslateForward()` and

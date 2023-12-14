@@ -4,6 +4,7 @@
 #include "components/transform.h"
 #include "lab_m1/Homework2/lab_camera.h"
 
+#include "lab_m1/Homework2/Tank.h"
 
 namespace m1
 {
@@ -44,6 +45,8 @@ namespace m1
         float gun_rot_y = 0;
         float gun_rot_x = 0;
         float tz = 0;
+
+        Tank player_tank;
 
         void Render_Player_Tank();
     };

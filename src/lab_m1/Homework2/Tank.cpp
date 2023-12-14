@@ -4,21 +4,12 @@
 
 #include "Tank.h"
 
-float clamp_rotation(float x, float min=-M_PI / 4, float max=M_PI / 8) {
-    if (x < min) {
-        return min;
-    } else if (x > max) {
-        return max;
-    }
-    return x;
-}
-
 float Tank::getGunRotationX() const {
-    return clamp_rotation(gun_rotation_x);
+    return gun_rotation_x;
 }
 
 void Tank::setGunRotationX(float gunRotationX) {
-    gun_rotation_x = clamp_rotation(gunRotationX);
+    gun_rotation_x = gunRotationX;
 }
 
 float Tank::getGunRotationY() const {
@@ -51,4 +42,41 @@ int Tank::getHp() const {
 
 void Tank::setHp(int hp) {
     Tank::hp = hp;
+}
+
+Tank::Tank(const glm::vec3 &position, const glm::vec3 &forward, float collisionMargin) : WOTGameObject(position,
+                                                                                                       forward,
+                                                                                                       collisionMargin) {}
+
+Tank::Tank() : WOTGameObject() {
+
+}
+
+void Tank::Move(float distance) {
+    glm::vec3 dir = glm::normalize(glm::vec3(forward.x, 0, forward.z));
+    position += dir * distance * speed;
+}
+
+float Tank::getSpeed() const {
+    return speed;
+}
+
+void Tank::setSpeed(float speed) {
+    Tank::speed = speed;
+}
+
+void Tank::Steer(float angle) {
+    body_rotation_y += angle;
+    glm::vec4 newVector =
+            glm::rotate(glm::mat4(1.0f), angle, glm::vec3(0, 1, 0)) *
+            glm::vec4(forward, 1);
+    forward = glm::normalize(glm::vec3(newVector));
+}
+
+float Tank::getBodyRotationY() const {
+    return body_rotation_y;
+}
+
+void Tank::setBodyRotationY(float bodyRotationY) {
+    body_rotation_y = bodyRotationY;
 }
