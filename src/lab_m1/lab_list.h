@@ -15,6 +15,7 @@
 #include "lab_m1/Homework1/Projectile.h"
 #include "lab_m1/Homework2/Homework2.h"
 #include "lab_m1/Homework2/WOTGameObject.h"
+#include "lab_m1/Homework2/Tank.h"
 #include "lab_m1/lab1/lab1.h"
 #include "lab_m1/lab2/lab2.h"
 #include "lab_m1/lab3/lab3.h"
