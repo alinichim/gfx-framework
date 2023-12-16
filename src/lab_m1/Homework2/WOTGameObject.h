@@ -10,11 +10,9 @@
 
 class WOTGameObject {
 public:
-    WOTGameObject(const glm::vec3 &position, const glm::vec3 &forward, float collisionMargin);
+    WOTGameObject(const glm::vec3 &position, const glm::vec3 &forward);
 
     WOTGameObject();
-
-    bool collision(WOTGameObject object);
 
     const glm::vec3 &getPosition() const;
 
@@ -24,14 +22,9 @@ public:
 
     void setForward(const glm::vec3 &forward);
 
-    float getCollisionRange() const;
-
-    void setCollisionRange(float collisionRange);
-
 protected:
     glm::vec3 position;
     glm::vec3 forward;
-    float collision_range;
 };
 
 

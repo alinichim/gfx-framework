@@ -72,6 +72,12 @@ void Homework2::Init()
         meshes[mesh->GetMeshID()] = mesh;
     }
 
+    {
+        Mesh *mesh = new Mesh("tank_shell");
+        mesh->LoadMesh(PATH_JOIN(window->props.selfDir, RESOURCE_PATH::MODELS, "tank"), "tank_shell.obj");
+        meshes[mesh->GetMeshID()] = mesh;
+    }
+
     // Create a shader program for drawing face polygon with the color of the normal
     {
         auto *shader = new Shader("HomeworkShader");
@@ -114,7 +120,6 @@ void Homework2::Render_Player_Tank() {
         // Body
         glm::mat4 modelMatrix = glm::mat4(1.0f);
         modelMatrix = glm::translate(modelMatrix, player_tank.getPosition());
-        std::cout << player_tank.getForward().x << " " << player_tank.getForward().y << " " << player_tank.getForward().z << std::endl;
         modelMatrix = glm::rotate(modelMatrix, player_tank.getBodyRotationY(), glm::vec3(0, 1, 0));
         glm::vec3 color(0.0f);
         color.g = 0.15f;
@@ -161,6 +166,32 @@ void Homework2::Update(float deltaTimeSeconds)
 
     Render_Player_Tank();
 
+    // filter shells
+    auto removeCondition = [](TankShell shell){
+        return shell.getPosition().y <= 0;
+    };
+    auto newEnd = std::remove_if(shells.begin(), shells.end(), removeCondition);
+    shells.erase(newEnd, shells.end());
+
+    // Render shells
+    for (auto &shell : shells) {
+        // move
+        glm::vec3 position = shell.getPosition();
+        glm::vec3 speed = shell.getSpeed();
+        speed -= glm::vec3(0, 0.6f, 0) * deltaTimeSeconds;
+        shell.setSpeed(speed);
+        position += speed * deltaTimeSeconds;
+        shell.setPosition(position);
+
+        glm::mat4 modelMatrix = glm::mat4(1.0f);
+        modelMatrix = glm::translate(modelMatrix, shell.getPosition());
+        modelMatrix = glm::rotate(modelMatrix, shell.getRotationY(), glm::vec3(0, 1, 0));
+        modelMatrix = glm::rotate(modelMatrix, clamp_rotation(shell.getRotationX()), glm::vec3(1, 0, 0));
+        modelMatrix = glm::scale(modelMatrix, glm::vec3(0.1f));
+        glm::vec3 color(1.0f);
+        color.b = 0.05f;
+        RenderSimpleMesh(meshes["tank_shell"], shaders["HomeworkShader"], modelMatrix, color);
+    }
 }
 
 
@@ -278,6 +309,22 @@ void Homework2::OnMouseMove(int mouseX, int mouseY, int deltaX, int deltaY)
 void Homework2::OnMouseBtnPress(int mouseX, int mouseY, int button, int mods)
 {
     // Add mouse button press event
+    if (button == GLFW_MOUSE_BUTTON_2) {
+        TankShell newShell;
+        float rotx = clamp_rotation(player_tank.getGunRotationX());
+        float roty = player_tank.getTurretRotationY();
+        glm::vec3 speedVector = glm::normalize(glm::vec3(sin(roty) * cos(rotx), -sin(rotx), cos(roty) * cos(rotx)));
+        newShell.setRotationX(rotx);
+        newShell.setRotationY(roty);
+        glm::vec4 position = glm::vec4(player_tank.getGunCenter(), 1);
+        glm::mat4 modelMatrix = glm::mat4(1);
+        modelMatrix = glm::rotate(modelMatrix, roty, glm::vec3(0, 1, 0));
+        position = modelMatrix * position;
+        newShell.setPosition(player_tank.getPosition() + glm::vec3(position) + 5.0f * speedVector);
+        float speed = 2;
+        newShell.setSpeed(speedVector * speed);
+        shells.push_back(newShell);
+    }
 }
 
 

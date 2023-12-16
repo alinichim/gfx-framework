@@ -5,6 +5,7 @@
 #include "lab_m1/Homework2/lab_camera.h"
 
 #include "lab_m1/Homework2/Tank.h"
+#include "TankShell.h"
 
 namespace m1
 {
@@ -41,12 +42,9 @@ namespace m1
         float right = 0;
         glm::mat4 projectionMatrix;
         implemented::Camera *camera;
-        float turret_rot = 0;
-        float gun_rot_y = 0;
-        float gun_rot_x = 0;
-        float tz = 0;
 
         Tank player_tank;
+        std::vector<TankShell> shells;
 
         void Render_Player_Tank();
     };

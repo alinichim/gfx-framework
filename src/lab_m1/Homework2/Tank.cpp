@@ -44,9 +44,7 @@ void Tank::setHp(int hp) {
     Tank::hp = hp;
 }
 
-Tank::Tank(const glm::vec3 &position, const glm::vec3 &forward, float collisionMargin) : WOTGameObject(position,
-                                                                                                       forward,
-                                                                                                       collisionMargin) {}
+Tank::Tank(const glm::vec3 &position, const glm::vec3 &forward, float collisionMargin) {}
 
 Tank::Tank() : WOTGameObject() {
 
