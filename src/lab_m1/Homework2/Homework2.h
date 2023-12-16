@@ -6,6 +6,9 @@
 
 #include "lab_m1/Homework2/Tank.h"
 #include "TankShell.h"
+#include "Building.h"
+
+#include <random>
 
 namespace m1
 {
@@ -46,6 +49,7 @@ namespace m1
         Tank player_tank;
         std::vector<Tank> enemy_tanks;
         std::vector<TankShell> shells;
+        std::vector<Building> buildings;
 
         void Render_Tank(Tank tank);
     };

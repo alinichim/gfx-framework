@@ -6,6 +6,8 @@
 #define GFXFRAMEWORK_TANKSHELL_H
 
 #include "lab_m1/Homework2/WOTGameObject.h"
+#include "Tank.h"
+#include "Building.h"
 
 class TankShell : public WOTGameObject {
 

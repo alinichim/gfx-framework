@@ -6,6 +6,8 @@
 #include <vector>
 #include <string>
 #include <iostream>
+#include <random>
+#include <chrono>
 
 using namespace std;
 using namespace m1;
@@ -84,6 +86,12 @@ void Homework2::Init()
         meshes[mesh->GetMeshID()] = mesh;
     }
 
+    {
+        Mesh *mesh = new Mesh("building");
+        mesh->LoadMesh(PATH_JOIN(window->props.selfDir, RESOURCE_PATH::MODELS, "primitives"), "box.obj");
+        meshes[mesh->GetMeshID()] = mesh;
+    }
+
     // Create a shader program for drawing face polygon with the color of the normal
     {
         auto *shader = new Shader("HomeworkShader");
@@ -91,6 +99,26 @@ void Homework2::Init()
         shader->AddShader(PATH_JOIN(window->props.selfDir, SOURCE_PATH::M1, "Homework2", "shaders", "FragmentShader.glsl"), GL_FRAGMENT_SHADER);
         shader->CreateAndLink();
         shaders[shader->GetName()] = shader;
+    }
+
+    // Place random buildings
+    std::mt19937 gen1(std::chrono::high_resolution_clock::now().time_since_epoch().count());
+    std::mt19937 gen2(std::chrono::high_resolution_clock::now().time_since_epoch().count() + 2);
+    std::mt19937 gen3(std::chrono::high_resolution_clock::now().time_since_epoch().count() + 4);
+    std::uniform_int_distribution<int> building_distribution(8, 16);
+    std::uniform_real_distribution<float> building_pos_dist(10, 40);
+    std::uniform_real_distribution<float> building_dim_dist(5, 10);
+    for (int i = 0; i < building_distribution(gen1); i++) {
+        Building newBuilding;
+        float pos1 = building_pos_dist(gen2);
+        float pos2 = building_pos_dist(gen2);
+        float s1 = (building_pos_dist(gen2) < 25) ? -1 : 1;
+        float s2 = (building_pos_dist(gen2) < 25) ? -1 : 1;
+        newBuilding.setPosition(glm::vec3(s1 * pos1, 0, s2 * pos2));
+        newBuilding.setHx(building_dim_dist(gen3));
+        newBuilding.setHy(building_dim_dist(gen3));
+        newBuilding.setHz(building_dim_dist(gen3));
+        buildings.push_back(newBuilding);
     }
 
     camera = new implemented::Camera();
@@ -176,6 +204,7 @@ void Homework2::Update(float deltaTimeSeconds)
 
     {
         glm::mat4 modelMatrix(1);
+        modelMatrix = glm::scale(modelMatrix, glm::vec3(10, 0, 10));
         glm::vec3 color(1);
         color.b = 0.7f;
         RenderSimpleMesh(meshes["ground"], shaders["HomeworkShader"], modelMatrix, color);
@@ -212,10 +241,20 @@ void Homework2::Update(float deltaTimeSeconds)
         modelMatrix = glm::translate(modelMatrix, shell.getPosition());
         modelMatrix = glm::rotate(modelMatrix, shell.getRotationY(), glm::vec3(0, 1, 0));
         modelMatrix = glm::rotate(modelMatrix, clamp_rotation(shell.getRotationX()), glm::vec3(1, 0, 0));
-        modelMatrix = glm::scale(modelMatrix, glm::vec3(0.1f));
+        modelMatrix = glm::scale(modelMatrix, glm::vec3(0.3f));
         glm::vec3 color(0.6f);
         color.r = 1.0f;
         RenderSimpleMesh(meshes["tank_shell"], shaders["HomeworkShader"], modelMatrix, color);
+    }
+
+    // Render buildings
+    for (auto &building : buildings) {
+        camera->position += player_tank.collisionCallback(building);
+        glm::mat4 modelMatrix = glm::mat4(1.0f);
+        modelMatrix = glm::translate(modelMatrix, building.getPosition());
+        modelMatrix = glm::scale(modelMatrix, 2.0f * glm::vec3(building.getHx(), building.getHy(), building.getHz()));
+        glm::vec3 color(0.7f);
+        RenderSimpleMesh(meshes["building"], shaders["HomeworkShader"], modelMatrix, color);
     }
 }
 

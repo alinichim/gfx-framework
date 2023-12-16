@@ -123,3 +123,55 @@ float Tank::getRadius() {
 void Tank::setRadius(float radius) {
     Tank::radius = radius;
 }
+
+glm::vec3 Tank::collisionCallback(Building &building) {
+    glm::vec3 v[] = {
+            glm::vec3(1.8f, 0, 3),
+            glm::vec3(-1.8f, 0, 3),
+            glm::vec3(-1.8f, 0, -3),
+            glm::vec3(1.8f, 0, -3),
+    };
+
+    glm::mat4 modelMatrix(1);
+    modelMatrix = glm::translate(modelMatrix, position);
+    modelMatrix = glm::rotate(modelMatrix, body_rotation_y, glm::vec3(0, 1, 0));
+    glm::vec3 bpos = building.getPosition();
+    float hx = building.getHx();
+    float hz = building.getHz();
+
+    for (int i = 0; i < 4; ++i) {
+        v[i] = glm::vec3(modelMatrix * glm::vec4(v[i], 1));
+        float dx = abs(v[i].x - bpos.x);
+        float dz = abs(v[i].z - bpos.z);
+        if (dx <= hx && dz <= hz) {
+            glm::vec3 dif = v[i] - bpos;
+            glm::vec3 P = glm::normalize(dif);
+            position += P * std::min(hx - dx, hz - dz);
+            return P * std::min(hx - dx, hz - dz);
+        }
+    }
+    return glm::vec3(0);
+}
+
+bool Tank::collision(Building building) {
+    glm::vec3 v[] = {
+            glm::vec3(2, 0, 3),
+            glm::vec3(-2, 0, 3),
+            glm::vec3(-2, 0, -3),
+            glm::vec3(2, 0, -3),
+    };
+
+    glm::mat4 modelMatrix(1);
+    modelMatrix = glm::translate(modelMatrix, position);
+    modelMatrix = glm::rotate(modelMatrix, body_rotation_y, glm::vec3(0, 1, 0));
+    glm::vec3 bpos = building.getPosition();
+    float hx = building.getHx();
+    float hz = building.getHz();
+    for (int i = 0; i < 4; ++i) {
+        v[i] = glm::vec3(modelMatrix * glm::vec4(v[i], 1));
+        if ((v[i].x - bpos.x >= -hx && v[i].x - bpos.x <= hx) && (v[i].z - bpos.z >= -hz && v[i].z - bpos.z <= hz)) {
+            return true;
+        }
+    }
+    return false;
+}

@@ -6,6 +6,7 @@
 #define GFXFRAMEWORK_TANK_H
 
 #include "lab_m1/Homework2/WOTGameObject.h"
+#include "Building.h"
 
 class Tank : public WOTGameObject {
 public:
@@ -19,12 +20,16 @@ public:
 
     bool collision(glm::vec3 point) override;
 
+    bool collision(Building building);
+
     /**
      * Callback function for tank-tank collision
      * @param tank
      * @return The offset to the next position of the calling tank
      */
     glm::vec3 collisionCallback(Tank &tank);
+
+    glm::vec3 collisionCallback(Building &building);
 
     float getGunRotationX() const;
 
@@ -69,7 +74,7 @@ protected:
     float turret_rotation_y = 0;
     glm::vec3 gun_center = glm::vec3(0.119408f, 2.1954, 1.01288f);
     int hp = 3;
-    float speed = 1;
+    float speed = 3;
     float projectileSpeed = 8;
     float radius = 3;
 };
