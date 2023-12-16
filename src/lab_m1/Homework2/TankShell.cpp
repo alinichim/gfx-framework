@@ -27,3 +27,7 @@ glm::vec3 TankShell::getSpeed() {
 void TankShell::setSpeed(glm::vec3 speed) {
     TankShell::speed = speed;
 }
+
+bool TankShell::collision(glm::vec3 point) {
+    return glm::abs(glm::dot(point - position, point - position)) <= 0.3f;
+}

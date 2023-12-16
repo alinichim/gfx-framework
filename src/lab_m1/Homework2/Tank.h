@@ -17,7 +17,14 @@ public:
 
     void Steer(float angle);
 
-    void Aim(float angle_x, float angle_y);
+    bool collision(glm::vec3 point) override;
+
+    /**
+     * Callback function for tank-tank collision
+     * @param tank
+     * @return The offset to the next position of the calling tank
+     */
+    glm::vec3 collisionCallback(Tank &tank);
 
     float getGunRotationX() const;
 
@@ -47,6 +54,14 @@ public:
 
     void setBodyRotationY(float bodyRotationY);
 
+    float getProjectileSpeed();
+
+    void setProjectileSpeed(float projectileSpeed);
+
+    float getRadius();
+
+    void setRadius(float radius);
+
 protected:
     float body_rotation_y = 0;
     float gun_rotation_x = 0;
@@ -55,6 +70,8 @@ protected:
     glm::vec3 gun_center = glm::vec3(0.119408f, 2.1954, 1.01288f);
     int hp = 3;
     float speed = 1;
+    float projectileSpeed = 8;
+    float radius = 3;
 };
 
 

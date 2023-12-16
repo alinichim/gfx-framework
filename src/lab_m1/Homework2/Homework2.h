@@ -44,8 +44,9 @@ namespace m1
         implemented::Camera *camera;
 
         Tank player_tank;
+        std::vector<Tank> enemy_tanks;
         std::vector<TankShell> shells;
 
-        void Render_Player_Tank();
+        void Render_Tank(Tank tank);
     };
 }   // namespace m1

@@ -78,3 +78,48 @@ float Tank::getBodyRotationY() const {
 void Tank::setBodyRotationY(float bodyRotationY) {
     body_rotation_y = bodyRotationY;
 }
+
+bool Tank::collision(glm::vec3 point) {
+    glm::vec3 dx, dy, dz;
+    dx = glm::vec3(1, 0, 0);
+    dy = glm::vec3(0, 1, 0);
+    dz = glm::vec3(0, 0, 1);
+
+    glm::mat4 modelMatrix(1);
+    modelMatrix = glm::rotate(modelMatrix, body_rotation_y, glm::vec3(0, 1, 0));
+    dx = glm::vec3(modelMatrix * glm::vec4(dx, 1));
+    dz = glm::vec3(modelMatrix * glm::vec4(dz, 1));
+
+    glm::vec3 half(2, 2, 3);
+
+    glm::vec3 d = point - position;
+
+    return glm::abs(glm::dot(d, dx)) <= half.x &&
+            glm::abs(glm::dot(d, dy)) <= half.y &&
+            glm::abs(glm::dot(d, dz)) <= half.z;
+}
+
+glm::vec3 Tank::collisionCallback(Tank &tank) {
+    glm::vec3 dif = tank.getPosition() - position;
+    glm::vec3 P = glm::normalize(dif);
+    P = (tank.getRadius() + radius - glm::distance(tank.getPosition(), position)) * P;
+    tank.setPosition(tank.getPosition() + P * 0.5f);
+    position += P * -0.5f;
+    return P * -0.5f;
+}
+
+float Tank::getProjectileSpeed() {
+    return projectileSpeed;
+}
+
+void Tank::setProjectileSpeed(float projectileSpeed) {
+    Tank::projectileSpeed = projectileSpeed;
+}
+
+float Tank::getRadius() {
+    return radius;
+}
+
+void Tank::setRadius(float radius) {
+    Tank::radius = radius;
+}

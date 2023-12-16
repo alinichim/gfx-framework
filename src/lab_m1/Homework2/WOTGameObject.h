@@ -14,6 +14,8 @@ public:
 
     WOTGameObject();
 
+    virtual bool collision(glm::vec3 point) = 0;
+
     glm::vec3 getPosition();
 
     void setPosition(glm::vec3 position);

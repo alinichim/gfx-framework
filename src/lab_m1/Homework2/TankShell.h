@@ -22,6 +22,8 @@ public:
 
     void setSpeed(glm::vec3 speed);
 
+    bool collision(glm::vec3 point) override;
+
 protected:
     float rotation_x = 0;
     float rotation_y = 0;
