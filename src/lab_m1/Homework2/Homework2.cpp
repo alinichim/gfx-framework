@@ -235,10 +235,13 @@ void Homework2::Update(float deltaTimeSeconds)
                 shells.push_back(newShell);
             }
         }
-
+        tank_hp = enemy_tank.getHp();
         Render_Tank(enemy_tank);
+        tank_hp = 3;
     }
+    tank_hp = player_tank.getHp();
     Render_Tank(player_tank);
+    tank_hp = 3;
 
     // check tank hit
     for (auto &shell : shells) {
@@ -338,6 +341,8 @@ void Homework2::RenderSimpleMesh(Mesh *mesh, Shader *shader, const glm::mat4 & m
 
 
     // TODO: extra channels
+    location = glGetUniformLocation(shader->program, "tank_hp");
+    glUniform1i(location, tank_hp);
 
     location = glGetUniformLocation(shader->program, "frag_color");
     glUniform3f(location, color.r, color.g, color.b);

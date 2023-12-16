@@ -43,6 +43,7 @@ namespace m1
         float fov = 40;
         float left = 0;
         float right = 0;
+        int tank_hp = 3;
         glm::mat4 projectionMatrix;
         implemented::Camera *camera;
 
