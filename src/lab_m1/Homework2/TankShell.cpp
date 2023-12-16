@@ -31,3 +31,13 @@ void TankShell::setSpeed(glm::vec3 speed) {
 bool TankShell::collision(glm::vec3 point) {
     return glm::abs(glm::dot(point - position, point - position)) <= 0.3f;
 }
+
+bool TankShell::collisionCallback(Building building) {
+    glm::mat4 modelMatrix(1);
+    modelMatrix = glm::translate(modelMatrix, -building.getPosition());
+    glm::vec3 spos = glm::vec3(modelMatrix * glm::vec4(position, 1));
+    float hx = building.getHx();
+    float hy = building.getHy();
+    float hz = building.getHz();
+    return spos.x >= -hx && spos.x <= hx && spos.y >= -hy && spos.y <= hy && spos.z >= -hz && spos.z <= hz;
+}

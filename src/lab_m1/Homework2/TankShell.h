@@ -6,7 +6,6 @@
 #define GFXFRAMEWORK_TANKSHELL_H
 
 #include "lab_m1/Homework2/WOTGameObject.h"
-#include "Tank.h"
 #include "Building.h"
 
 class TankShell : public WOTGameObject {
@@ -25,6 +24,8 @@ public:
     void setSpeed(glm::vec3 speed);
 
     bool collision(glm::vec3 point) override;
+
+    bool collisionCallback(Building building);
 
 protected:
     float rotation_x = 0;

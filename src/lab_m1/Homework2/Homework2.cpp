@@ -105,19 +105,19 @@ void Homework2::Init()
     std::mt19937 gen1(std::chrono::high_resolution_clock::now().time_since_epoch().count());
     std::mt19937 gen2(std::chrono::high_resolution_clock::now().time_since_epoch().count() + 2);
     std::mt19937 gen3(std::chrono::high_resolution_clock::now().time_since_epoch().count() + 4);
-    std::uniform_int_distribution<int> building_distribution(8, 16);
-    std::uniform_real_distribution<float> building_pos_dist(10, 40);
-    std::uniform_real_distribution<float> building_dim_dist(5, 10);
-    for (int i = 0; i < building_distribution(gen1); i++) {
+    std::uniform_int_distribution<int> distribution(8, 16);
+    std::uniform_real_distribution<float> posDist(20, 60);
+    std::uniform_real_distribution<float> dimDist(5, 10);
+    for (int i = 0; i < distribution(gen1); i++) {
         Building newBuilding;
-        float pos1 = building_pos_dist(gen2);
-        float pos2 = building_pos_dist(gen2);
-        float s1 = (building_pos_dist(gen2) < 25) ? -1 : 1;
-        float s2 = (building_pos_dist(gen2) < 25) ? -1 : 1;
+        float pos1 = posDist(gen2);
+        float pos2 = posDist(gen2);
+        float s1 = (posDist(gen2) < 25) ? -1 : 1;
+        float s2 = (posDist(gen2) < 25) ? -1 : 1;
         newBuilding.setPosition(glm::vec3(s1 * pos1, 0, s2 * pos2));
-        newBuilding.setHx(building_dim_dist(gen3));
-        newBuilding.setHy(building_dim_dist(gen3));
-        newBuilding.setHz(building_dim_dist(gen3));
+        newBuilding.setHx(dimDist(gen3));
+        newBuilding.setHy(dimDist(gen3));
+        newBuilding.setHz(dimDist(gen3));
         buildings.push_back(newBuilding);
     }
 
@@ -127,9 +127,15 @@ void Homework2::Init()
 
     projectionMatrix = glm::perspective(RADIANS(fov), window->props.aspectRatio, z_near, z_far);
 
-    Tank enemy_tank;
-    enemy_tank.setPosition(glm::vec3(10, 0, 10));
-    enemy_tanks.push_back(enemy_tank);
+    for (int i = 0; i < distribution(gen1); i++) {
+        Tank newEnemy;
+        float pos1 = posDist(gen2);
+        float pos2 = posDist(gen2);
+        float s1 = (posDist(gen2) < 25) ? -1 : 1;
+        float s2 = (posDist(gen2) < 25) ? -1 : 1;
+        newEnemy.setPosition(glm::vec3(s1 * pos1, 0, s2 * pos2));
+        enemy_tanks.push_back(newEnemy);
+    }
 }
 
 
@@ -142,15 +148,6 @@ void Homework2::FrameStart()
     glm::ivec2 resolution = window->GetResolution();
     // Sets the screen area where to draw
     glViewport(0, 0, resolution.x, resolution.y);
-}
-
-float clamp_rotation(float x, float min=-M_PI / 4, float max=M_PI / 10) {
-    if (x < min) {
-        return min;
-    } else if (x > max) {
-        return max;
-    }
-    return x;
 }
 
 void Homework2::Render_Tank(Tank tank) {
@@ -205,10 +202,12 @@ void Homework2::Update(float deltaTimeSeconds)
     {
         glm::mat4 modelMatrix(1);
         modelMatrix = glm::scale(modelMatrix, glm::vec3(10, 0, 10));
-        glm::vec3 color(1);
-        color.b = 0.7f;
+        glm::vec3 color(0.7);
+        color.b = 0.4f;
         RenderSimpleMesh(meshes["ground"], shaders["HomeworkShader"], modelMatrix, color);
     }
+
+    // TODO: player tank detection
 
     // check tank-tank collisions
     for (auto &enemy_tank: enemy_tanks) {
@@ -216,16 +215,69 @@ void Homework2::Update(float deltaTimeSeconds)
             camera->position += player_tank.collisionCallback(enemy_tank);
         }
 
+        for (auto &building : buildings) {
+            enemy_tank.collisionCallback(building);
+        }
+
+        for (auto &tank : enemy_tanks) {
+            if (tank.getPosition() == enemy_tank.getPosition()) {
+                continue;
+            }
+            if (glm::distance(enemy_tank.getPosition(), tank.getPosition()) < 2 * tank.getRadius()) {
+                enemy_tank.collisionCallback(tank);
+            }
+        }
+
+        if (glm::distance(enemy_tank.getPosition(), player_tank.getPosition()) < 50) {
+            enemy_tank.AimAt(player_tank.getPosition());
+            TankShell newShell;
+            if (enemy_tank.Shoot(newShell)) {
+                shells.push_back(newShell);
+            }
+        }
+
         Render_Tank(enemy_tank);
     }
     Render_Tank(player_tank);
 
+    // check tank hit
+    for (auto &shell : shells) {
+        for (auto &tank : enemy_tanks) {
+            if (tank.shellCollisionCallback(shell)) {
+                tank.setHp(tank.getHp() - 1);
+                shell.setPosition(glm::vec3(0));
+                break;
+            }
+        }
+        if (player_tank.shellCollisionCallback(shell)) {
+            player_tank.setHp(player_tank.getHp() - 1);
+            shell.setPosition(glm::vec3(0));
+        }
+    }
+
+    // check shell-building collision
+    for (auto &shell : shells) {
+        for (auto &building : buildings) {
+            if (shell.collisionCallback(building)) {
+                shell.setPosition(glm::vec3(0));
+                break;
+            }
+        }
+    }
+
     // filter shells
-    auto removeCondition = [](TankShell shell){
+    auto shellRemoveCondition = [](TankShell shell){
         return shell.getPosition().y <= 0;
     };
-    auto newEnd = std::remove_if(shells.begin(), shells.end(), removeCondition);
-    shells.erase(newEnd, shells.end());
+    auto newShellsEnd = std::remove_if(shells.begin(), shells.end(), shellRemoveCondition);
+    shells.erase(newShellsEnd, shells.end());
+
+    // filter tanks
+    auto tankRemoveCondition = [](Tank tank) {
+        return tank.getHp() <= 0;
+    };
+    auto newTanksEnd = std::remove_if(enemy_tanks.begin(), enemy_tanks.end(), tankRemoveCondition);
+    enemy_tanks.erase(newTanksEnd, enemy_tanks.end());
 
     // Render shells
     for (auto &shell : shells) {
@@ -256,6 +308,10 @@ void Homework2::Update(float deltaTimeSeconds)
         glm::vec3 color(0.7f);
         RenderSimpleMesh(meshes["building"], shaders["HomeworkShader"], modelMatrix, color);
     }
+
+//    if (player_tank.getHp() <= 0) {
+//        exit(0);
+//    }
 }
 
 
@@ -375,19 +431,9 @@ void Homework2::OnMouseBtnPress(int mouseX, int mouseY, int button, int mods)
     // Add mouse button press event
     if (button == GLFW_MOUSE_BUTTON_2) {
         TankShell newShell;
-        float rotx = clamp_rotation(player_tank.getGunRotationX());
-        float roty = player_tank.getTurretRotationY();
-        glm::vec3 speedVector = glm::normalize(glm::vec3(sin(roty) * cos(rotx), -sin(rotx), cos(roty) * cos(rotx)));
-        newShell.setRotationX(rotx);
-        newShell.setRotationY(roty);
-        glm::vec4 position = glm::vec4(player_tank.getGunCenter(), 1);
-        glm::mat4 modelMatrix = glm::mat4(1);
-        modelMatrix = glm::rotate(modelMatrix, roty, glm::vec3(0, 1, 0));
-        position = modelMatrix * position;
-        newShell.setPosition(player_tank.getPosition() + glm::vec3(position) + 5.0f * speedVector);
-        float speed = 8;
-        newShell.setSpeed(speedVector * speed);
-        shells.push_back(newShell);
+        if (player_tank.Shoot(newShell)) {
+            shells.push_back(newShell);
+        }
     }
 }
 

@@ -7,6 +7,10 @@
 
 #include "lab_m1/Homework2/WOTGameObject.h"
 #include "Building.h"
+#include "TankShell.h"
+#include <chrono>
+
+float clamp_rotation(float x, float min=-M_PI / 4, float max=M_PI / 10);
 
 class Tank : public WOTGameObject {
 public:
@@ -17,6 +21,10 @@ public:
     void Move(float distance);
 
     void Steer(float angle);
+
+    bool Shoot(TankShell &shell);
+
+    void AimAt(glm::vec3 position);
 
     bool collision(glm::vec3 point) override;
 
@@ -30,6 +38,8 @@ public:
     glm::vec3 collisionCallback(Tank &tank);
 
     glm::vec3 collisionCallback(Building &building);
+
+    bool shellCollisionCallback(TankShell shell);
 
     float getGunRotationX() const;
 
@@ -74,9 +84,10 @@ protected:
     float turret_rotation_y = 0;
     glm::vec3 gun_center = glm::vec3(0.119408f, 2.1954, 1.01288f);
     int hp = 3;
-    float speed = 3;
+    float speed = 5;
     float projectileSpeed = 8;
     float radius = 3;
+    std::chrono::high_resolution_clock::time_point lastShoot = std::chrono::high_resolution_clock::now();
 };
 
 

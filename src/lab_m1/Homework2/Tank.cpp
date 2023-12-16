@@ -4,6 +4,8 @@
 
 #include "Tank.h"
 
+#include <cmath>
+
 float Tank::getGunRotationX() const {
     return gun_rotation_x;
 }
@@ -174,4 +176,67 @@ bool Tank::collision(Building building) {
         }
     }
     return false;
+}
+
+bool Tank::shellCollisionCallback(TankShell shell) {
+    glm::mat4 modelMatrix(1);
+    modelMatrix = glm::translate(modelMatrix, -position);
+    modelMatrix = glm::rotate(modelMatrix, -body_rotation_y, glm::vec3(0, 1, 0));
+    glm::vec3 spos = glm::vec3(modelMatrix * glm::vec4(shell.getPosition(), 1));
+    float hx = 1.8f;
+    float hz = 3.2f;
+    return spos.x >= -hx && spos.x <= hx && spos.z >= -hz && spos.z <= hz;
+}
+
+float clamp_rotation(float x, float min, float max) {
+    if (x < min) {
+        return min;
+    } else if (x > max) {
+        return max;
+    }
+    return x;
+}
+
+bool Tank::Shoot(TankShell &shell) {
+    // check if reloaded
+    auto now = std::chrono::high_resolution_clock::now();
+    if (std::chrono::duration_cast<std::chrono::seconds>(now - lastShoot).count() < 1) {
+        return false;
+    }
+    lastShoot = now;
+
+    float rotx = clamp_rotation(gun_rotation_x);
+    float roty = turret_rotation_y;
+    glm::vec3 speedVector = glm::normalize(glm::vec3(sin(roty) * cos(rotx), -sin(rotx), cos(roty) * cos(rotx)));
+    shell.setRotationX(rotx);
+    shell.setRotationY(roty);
+    glm::vec4 sposition = glm::vec4(gun_center, 1);
+    glm::mat4 modelMatrix = glm::mat4(1);
+    modelMatrix = glm::rotate(modelMatrix, roty, glm::vec3(0, 1, 0));
+    sposition = modelMatrix * sposition;
+    shell.setPosition(this->position + glm::vec3(sposition) + 5.0f * speedVector);
+    shell.setSpeed(speedVector * projectileSpeed);
+
+    return true;
+}
+
+float clamp(float x, float lowerlimit = 0.0f, float upperlimit = 1.0f) {
+    if (x < lowerlimit) return lowerlimit;
+    if (x > upperlimit) return upperlimit;
+    return x;
+}
+
+float smoothstep(float x, float edge0, float edge1) {
+    x = clamp((x - edge0) / (edge1 - edge0));
+
+    return x * x * x * (x * (6.0f * x - 15.0f) + 10.0f);
+}
+
+void Tank::AimAt(glm::vec3 position) {
+    glm::vec3 dif = glm::normalize(position - this->position);
+    glm::vec3 forward(0, 0, 1);
+    float angle = std::acos(glm::dot(forward, dif));
+    turret_rotation_y = (dif.x >= 0) ? angle : M_PI * 2 - angle;
+    float dist = glm::distance(position, this->position);
+    gun_rotation_x = clamp_rotation(-smoothstep(dist, 8, 200));
 }
