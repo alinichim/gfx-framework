@@ -14,13 +14,13 @@ public:
 
     WOTGameObject();
 
-    const glm::vec3 &getPosition() const;
+    glm::vec3 getPosition();
 
-    void setPosition(const glm::vec3 &position);
+    void setPosition(glm::vec3 position);
 
-    const glm::vec3 &getForward() const;
+    glm::vec3 getForward();
 
-    void setForward(const glm::vec3 &forward);
+    void setForward(glm::vec3 forward);
 
 protected:
     glm::vec3 position;

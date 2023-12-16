@@ -7,19 +7,19 @@
 WOTGameObject::WOTGameObject(const glm::vec3 &position, const glm::vec3 &forward) : position(
         position), forward(forward) {}
 
-const glm::vec3 &WOTGameObject::getPosition() const {
+glm::vec3 WOTGameObject::getPosition() {
     return position;
 }
 
-void WOTGameObject::setPosition(const glm::vec3 &position) {
+void WOTGameObject::setPosition(glm::vec3 position) {
     WOTGameObject::position = position;
 }
 
-const glm::vec3 &WOTGameObject::getForward() const {
+glm::vec3 WOTGameObject::getForward() {
     return forward;
 }
 
-void WOTGameObject::setForward(const glm::vec3 &forward) {
+void WOTGameObject::setForward(glm::vec3 forward) {
     WOTGameObject::forward = forward;
 }
 
